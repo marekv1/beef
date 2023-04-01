@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2006-2023 Wade Alcorn - wade@bindshell.net
+# Browser Exploitation Framework (BeEF) - http://beefproject.com
+# See the file 'doc/COPYING' for copying permission
+#
+beef:
+    module:
+        browser_in_the_browser:
+            enable: true
+            category: "Social Engineering"
+            name: "Browser in the browser attack"
+            description: "Browser in the browser attack based on the article mr.d0x url: https://mrd0x.com/browser-in-the-browser-phishing-attack/"
+            authors: ["Marek Vajda","mr.d0x"]
+            target:
+                working: ["ALL"]
+                not_working: ["IE"]
+                user_notify: ['ALL']

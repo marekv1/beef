@@ -270,4 +270,4 @@ DEPENDENCIES
   xmlrpc (~> 0.3.2)
 
 BUNDLED WITH
-   2.4.8
+   2.2.32
